@@ -38,11 +38,13 @@ def expand_animation(word):
 def welcome():
     # initial welcome message
     wave_animation(
-        "Welcome to Know Nutrition, A program which tells the different nurtition value of a food")
+        "Welcome to Know Nutrition, A program which tells the different nurtition value of a food"
+    )
     wipe_animation("FOOD NAME:")
     food_name = input("-> ")
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
     print("getting the data...")
 
     # get the data about food_name
@@ -51,10 +53,7 @@ def welcome():
 
 def get_the_data(food_name):
     my_url = url
-    params = {
-        "query": food_name,
-        "api_key": api_key
-    }
+    params = {"query": food_name, "api_key": api_key}
 
     # get the data through the USDA API From USDA Database
     response = requests.get(my_url, params=params)
@@ -104,7 +103,8 @@ def get_food_data_Survey_FNDDS(data):
     if len(foods) == 0:
         wipe_animation("Sorry can't find the data for this food")
         expand_animation(
-            "===========================================================================================================================")
+            "==========================================================================================================================="
+        )
         ask_for_branded_food(data)
         return
     # if found some data in Survey_FNDDS data type, call print_description_of_foods function
@@ -114,12 +114,14 @@ def get_food_data_Survey_FNDDS(data):
 def ask_for_branded_food(data):
     # asking whether to find the data from branded data type or not
     wipe_animation(
-        "Want to know the nutrition through products which different brand offers?")
-    
+        "Want to know the nutrition through products which different brand offers?"
+    )
+
     wipe_animation("write 1->YES or 0-> NO: ")
     ask = input("-> ")
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
     try:
         # if yes, call get_food_data_Branded()
         if int(ask) == 1:
@@ -138,9 +140,9 @@ def ask_for_branded_food(data):
         wipe_animation(
             "Invalid item number or input! Please enter a valid number.")
         expand_animation(
-            "===========================================================================================================================")
+            "==========================================================================================================================="
+        )
         ask_for_branded_food(data)
-
 
 
 def get_food_data_Branded(data):
@@ -150,7 +152,8 @@ def get_food_data_Branded(data):
     if len(foods) == 0:
         wipe_animation("Sorry, can't find the data for this food")
         expand_animation(
-            "===========================================================================================================================")
+            "==========================================================================================================================="
+        )
         ask_want_to_restart()
 
     # if found some data in Branded data type, call print_description_of_foods function
@@ -177,7 +180,8 @@ def print_description_of_foods(foods, is_branded_food=False):
             wipe_animation(f"{key}: {value}")
 
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
     # ask for the food's discription number
     ask_description_num(description, foods, is_branded_food)
 
@@ -185,10 +189,12 @@ def print_description_of_foods(foods, is_branded_food=False):
 def ask_description_num(description, foods, is_branded_food):
     # asking few questions
     wipe_animation(
-        "choose from the list the description number of the food by writing 1 for the first item or 2 for second one and so on:")
+        "choose from the list the description number of the food by writing 1 for the first item or 2 for second one and so on:"
+    )
     description_num = input("-> ")
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
 
     # checking if the input given is valid or not
     try:
@@ -196,61 +202,66 @@ def ask_description_num(description, foods, is_branded_food):
             raise ValueError("invalid item number!")
 
         # if everthing is okay call print_report() on selected food
-        print_report(foods,description,description_num,is_branded_food)
-        
+        print_report(foods, description, description_num, is_branded_food)
 
     except ValueError:
         wipe_animation(
             "Invalid item number or input! Please enter a valid number.")
         expand_animation(
-            "===========================================================================================================================")
+            "==========================================================================================================================="
+        )
         ask_description_num(description, foods, is_branded_food)
 
 
-def print_report(foods,description,description_num,is_branded_food):
-        for food in foods:
-            if food["description"] == description[int(description_num)]:
-                wipe_animation(food["description"])
-                expand_animation(
-                        "===========================================================================================================================")
-            wipe_animation(
-                "write 'ALL' for all the nutrition or write 'SPECIFIC' if you want some specific nutrition: ")
-            ask2 = input("-> ")
+def print_report(foods, description, description_num, is_branded_food):
+    for food in foods:
+        if food["description"] == description[int(description_num)]:
+            wipe_animation(food["description"])
             expand_animation(
-                "===========================================================================================================================")
-            
-            try:
-                if ask2.lower() == 'all':
-                    is_branded_food_data_type(food, is_branded_food)
-                    print_all_nutrients(food)
+                "==========================================================================================================================="
+            )
+        wipe_animation(
+            "write 'ALL' for all the nutrition or write 'SPECIFIC' if you want some specific nutrition: "
+        )
+        ask2 = input("-> ")
+        expand_animation(
+            "==========================================================================================================================="
+        )
 
-                elif ask2.lower() == 'specific':
-                    is_branded_food_data_type(food, is_branded_food)
-                    print_specific_nutrients(food)
+        try:
+            if ask2.lower() == "all":
+                is_branded_food_data_type(food, is_branded_food)
+                print_all_nutrients(food)
+                return
+            elif ask2.lower() == "specific":
+                is_branded_food_data_type(food, is_branded_food)
+                print_specific_nutrients(food)
+                return
+            else:
+                raise ValueError("invalid input!")
 
-                else:
-                    raise ValueError("invalid input!")
-            
-            except ValueError:
-                wipe_animation("invalid input")
-                expand_animation(
-                    "===========================================================================================================================")
-                print_report(foods,description,description_num,is_branded_food)
+        except ValueError:
+            wipe_animation("invalid input")
+            expand_animation(
+                "==========================================================================================================================="
+            )
+            print_report(foods, description, description_num, is_branded_food)
 
 
 def is_branded_food_data_type(food, is_branded_food):
     if is_branded_food:
-        wipe_animation(f'description: {food["description"]}\n'
-                       f'brandOwner: {food["brandOwner"]}\n'
-                       f'brandName: {food["brandName"]}\n'
-                       f'ingredients: {food["ingredients"]}\n'
-                       f'foodCategory: {food["foodCategory"]}\n'
-                       f'packageWeight: {food["packageWeight"]}\n'
-                       )
+        wipe_animation(
+            f'description: {food["description"]}\n'
+            f'brandOwner: {food["brandOwner"]}\n'
+            f'brandName: {food["brandName"]}\n'
+            f'ingredients: {food["ingredients"]}\n'
+            f'foodCategory: {food["foodCategory"]}\n'
+            f'packageWeight: {food["packageWeight"]}\n'
+        )
 
         serving_size = food["servingSize"]
         serving_size_unit = food["servingSizeUnit"]
-        print(f'servingSize: {serving_size}{serving_size_unit}')
+        print(f"servingSize: {serving_size}{serving_size_unit}")
         print()
     return
 
@@ -273,7 +284,8 @@ def print_all_nutrients_accordingly(food, printing_func):
         printing_string = f"{nutrient_name}, {nutrient_value} {nutrient_value_unit}"
         printing_func(printing_string)
     expand_animation(
-        "=========================================================================================================================================")
+        "========================================================================================================================================="
+    )
 
 
 def print_specific_nutrients(food):
@@ -296,52 +308,67 @@ def print_specific_nutrients(food):
         for key, value in nutrient_names.items():
             wipe_animation(f"{key}: {value}")
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
 
     ask_specific_nutrient_num(food, nutrient_names,
                               nutrient_value, nutrient_value_unit)
 
 
-def ask_specific_nutrient_num(food, nutrient_names, nutrient_value, nutrient_value_unit):
+def ask_specific_nutrient_num(
+    food, nutrient_names, nutrient_value, nutrient_value_unit
+):
     wipe_animation(
-        "choose from the list the specific nutrient of the food by writing 1 for first item 2 for second one and so on: ")
+        "choose from the list the specific nutrient of the food by writing 1 for first item 2 for second one and so on: "
+    )
     specific_nutrient_num = input("-> ")
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
 
     # checking if the input given is valid or not
     try:
-        if int(specific_nutrient_num) > len(nutrient_names) or int(specific_nutrient_num) <= 0:
+        if (
+            int(specific_nutrient_num) > len(nutrient_names)
+            or int(specific_nutrient_num) <= 0
+        ):
             raise ValueError("invalid item number!")
 
         # if everthing is okay
         printing_string = f"{nutrient_names[int(specific_nutrient_num)]}, {nutrient_value[int(specific_nutrient_num)-1]} {nutrient_value_unit[int(specific_nutrient_num)-1]}"
         wave_animation(printing_string)
         expand_animation(
-            "===========================================================================================================================")
-        ask_want_to_know_more(food, nutrient_names, nutrient_value, nutrient_value_unit)
+            "==========================================================================================================================="
+        )
+        ask_want_to_know_more(food, nutrient_names,
+                              nutrient_value, nutrient_value_unit)
 
     except ValueError:
         wipe_animation(
             "Invalid item number or input! Please enter a valid number.")
         expand_animation(
-            "===========================================================================================================================")
+            "==========================================================================================================================="
+        )
         ask_specific_nutrient_num(
-            food, nutrient_names, nutrient_value, nutrient_value_unit)
+            food, nutrient_names, nutrient_value, nutrient_value_unit
+        )
 
 
 def ask_want_to_know_more(food, nutrient_names, nutrient_value, nutrient_value_unit):
     wipe_animation(
         "Want to know more specific nutritional values of this food?")
-    
+
     wipe_animation("write 1->YES or 0-> NO: ")
     ask = input("-> ")
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
     try:
         # if yes, call get_food_data_Branded()
         if int(ask) == 1:
-            ask_specific_nutrient_num(food, nutrient_names, nutrient_value, nutrient_value_unit)
+            ask_specific_nutrient_num(
+                food, nutrient_names, nutrient_value, nutrient_value_unit
+            )
             return
 
         # if no, just restart the program
@@ -356,19 +383,20 @@ def ask_want_to_know_more(food, nutrient_names, nutrient_value, nutrient_value_u
         wipe_animation(
             "Invalid item number or input! Please enter a valid number.")
         expand_animation(
-            "===========================================================================================================================")
-        ask_want_to_know_more(food, nutrient_names, nutrient_value, nutrient_value_unit)
-
+            "==========================================================================================================================="
+        )
+        ask_want_to_know_more(food, nutrient_names,
+                              nutrient_value, nutrient_value_unit)
 
 
 def ask_want_to_restart():
-    wipe_animation(
-        "Want to restart the program")
-    
+    wipe_animation("Want to restart the program")
+
     wipe_animation("write 1->YES or 0-> NO: ")
     ask = input("-> ")
     expand_animation(
-        "===========================================================================================================================")
+        "==========================================================================================================================="
+    )
     try:
         # if yes, call get_food_data_Branded()
         if int(ask) == 1:
@@ -378,7 +406,9 @@ def ask_want_to_restart():
         elif int(ask) == 0:
             time.sleep(1)
             wave_animation("END OF PROGRAM!")
-            expand_animation("===========================================================================================================================")
+            expand_animation(
+                "==========================================================================================================================="
+            )
             return
 
         else:
@@ -388,7 +418,9 @@ def ask_want_to_restart():
         wipe_animation(
             "Invalid item number or input! Please enter a valid number.")
         expand_animation(
-            "===========================================================================================================================")
+            "==========================================================================================================================="
+        )
         ask_want_to_restart()
+
 
 main()
