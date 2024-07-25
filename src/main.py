@@ -5,7 +5,7 @@ from url import url
 from terminaltexteffects.effects.effect_waves import Waves
 from terminaltexteffects.effects.effect_wipe import Wipe
 from terminaltexteffects.effects.effect_expand import Expand
-
+from tabulate import tabulate
 
 def main():
     welcome()
@@ -170,9 +170,10 @@ def print_description_of_foods(foods, is_branded_food=False):
         i += 1
 
     # if length is more than 10 then just print the description of food else the animation will take a lot of time
-    if len(description) > 10:
-        for key, value in description.items():
-            print(f"{key}: {value}")
+    if len(description) > 6:
+        table_data = [[key,value] for key,value in description.items()]
+        table = tabulate(table_data,headers=["S.NO","DESCRIPTION"],tablefmt="fancy_grid")
+        print(table)
 
     # else print the data with wipe_animation()
     else:
@@ -283,9 +284,7 @@ def print_all_nutrients_accordingly(food, printing_func):
         nutrient_value_unit = food_nutrient["unitName"]
         printing_string = f"{nutrient_name}, {nutrient_value} {nutrient_value_unit}"
         printing_func(printing_string)
-    expand_animation(
-        "========================================================================================================================================="
-    )
+        print("=========================================================================================================================================")
 
 
 def print_specific_nutrients(food):
@@ -301,9 +300,13 @@ def print_specific_nutrients(food):
         nutrient_value_unit.append(food_nutrient["unitName"])
         i += 1
 
-    if len(nutrient_names) > 10:
-        for key, value in nutrient_names.items():
-            print(f"{key}: {value}")
+    if len(nutrient_names) > 6:
+        # for key, value in nutrient_names.items():
+        #     print(f"{key}: {value}")
+
+        table_data = [[key,value] for key,value in nutrient_names.items()]
+        table = tabulate(table_data, headers=["S.NO","NUTRIENT NAME"],tablefmt="fancy_grid")
+        print(table)
     else:
         for key, value in nutrient_names.items():
             wipe_animation(f"{key}: {value}")
