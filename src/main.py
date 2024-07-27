@@ -1,6 +1,7 @@
 import requests
 import time
-import sys,os
+import sys
+import os
 import signal
 import pyfiglet
 from terminaltexteffects.effects.effect_waves import Waves
