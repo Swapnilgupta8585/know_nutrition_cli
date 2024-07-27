@@ -44,14 +44,13 @@ def welcome():
     load_dotenv()
 
     api_key = os.getenv('API_KEY')
-    url = os.getenv('API_URL')
 
-    if not api_key or not url:
-        raise ValueError("API_KEY and API_URL must be set in the environment variables.")
+    if not api_key:
+        raise ValueError("API_KEY must be set in the environment variables.")
     
     
     # Fetch the food data based on the user input
-    get_the_data(food_name,api_key,url)
+    get_the_data(food_name,api_key)
 
 
 def handle_exit(signal_received, frame):
@@ -111,9 +110,9 @@ def expand_animation(word):
             terminal.print(frame)
 
 
-def get_the_data(food_name,api_key,url):
+def get_the_data(food_name,api_key):
     # Define the URL and parameters for the USDA API request
-    my_url = url
+    my_url = "https://api.nal.usda.gov/fdc/v1/foods/search"
     params = {"query": food_name, "api_key": api_key}
 
     # Make a GET request to the USDA API
