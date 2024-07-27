@@ -1,15 +1,14 @@
 import requests
 import time
-import sys
+import sys,os
 import signal
 import pyfiglet
-from api_key import api_key
-from url import url
 from terminaltexteffects.effects.effect_waves import Waves
 from terminaltexteffects.effects.effect_wipe import Wipe
 from terminaltexteffects.effects.effect_expand import Expand
 from terminaltexteffects.effects.effect_burn import Burn
 from tabulate import tabulate
+from dotenv import load_dotenv
 
 
 def main():
@@ -39,9 +38,19 @@ def welcome():
     
     # Indicate that data retrieval is in progress
     print("getting the data...")
+
+    # Load environment variables from the .env file
+    load_dotenv()
+
+    api_key = os.getenv('API_KEY')
+    url = os.getenv('API_URL')
+
+    if not api_key or not url:
+        raise ValueError("API_KEY and API_URL must be set in the environment variables.")
+    
     
     # Fetch the food data based on the user input
-    get_the_data(food_name)
+    get_the_data(food_name,api_key,url)
 
 
 def handle_exit(signal_received, frame):
@@ -101,7 +110,7 @@ def expand_animation(word):
             terminal.print(frame)
 
 
-def get_the_data(food_name):
+def get_the_data(food_name,api_key,url):
     # Define the URL and parameters for the USDA API request
     my_url = url
     params = {"query": food_name, "api_key": api_key}
@@ -177,7 +186,6 @@ def ask_for_branded_food(data):
 
         # If the user enters 0, restart the program
         elif int(ask) == 0:
-            time.sleep(1)
             ask_want_to_restart()
 
         # Raise an exception if the input is not 1 or 0
@@ -366,7 +374,7 @@ def print_all_nutrients(food):
 
 def print_specific_nutrients(food):
     # Display an animation to indicate the beginning of the nutritional values section
-    wipe_animation("COMPLETE NUTRITIONAL VALUE")
+    wipe_animation("COMPLETE NUTRITION LIST")
     print()
     
     # Initialize lists to store nutrient names, values, and units
@@ -415,7 +423,7 @@ def ask_specific_nutrient_num(food, nutrient_names, nutrient_value, nutrient_val
             raise ValueError("invalid item number!")
 
         # If everything is okay, prepare the string with the nutrient information
-        printing_string = f"{nutrient_names[int(specific_nutrient_num) - 1]}, {nutrient_value[int(specific_nutrient_num) - 1]}{nutrient_value_unit[int(specific_nutrient_num) - 1].lower()}"
+        printing_string = f"{nutrient_names[int(specific_nutrient_num)]}, {nutrient_value[int(specific_nutrient_num)-1]}{nutrient_value_unit[int(specific_nutrient_num)-1].lower()}"
         
         # Display the nutrient information with an animation
         wave_animation(f'{printing_string} in 100g')
@@ -449,8 +457,6 @@ def ask_want_to_know_more(food, nutrient_names, nutrient_value, nutrient_value_u
 
         # Check if the input is 0 (NO)
         elif int(ask) == 0:
-            # Sleep for a second before restarting the program
-            time.sleep(1)
             # Call the function to ask if the user wants to restart the process
             ask_want_to_restart()
             return
@@ -483,8 +489,6 @@ def ask_want_to_restart():
 
         # Check if the input is 0 (NO)
         elif int(ask) == 0:
-            # Sleep for a second before ending the program
-            time.sleep(1)
             #Print a big "End!" message with a burn animation
             print_big("END", burn_animation)
             expand_animation("===========================================================================================================================")
