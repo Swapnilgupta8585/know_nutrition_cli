@@ -57,7 +57,7 @@ def handle_exit(signal_received, frame):
     # Handle the program exit when a termination signal is received (e.g., ctrl + C)
     expand_animation("===========================================================================================================================")
     # Print a big "End!" message with a burn animation
-    print_big("End!", burn_animation)
+    print_big("End!", wipe_animation)
     expand_animation("===========================================================================================================================")
     # Exit the program
     sys.exit(0)
