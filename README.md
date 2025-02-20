@@ -1,8 +1,6 @@
 # KnowNutritionCLI
 
-
-https://github.com/user-attachments/assets/87f37a97-ccfb-4fed-97d2-d614c86aaac5
-
+![knowNutritionGif](https://github.com/user-attachments/assets/4aaf12a7-4149-46a4-91bc-6e2ecdd47989)
 
 **KnowNutritionCLI** is a simple command-line application that provides detailed nutritional information about foods. It uses data from `USDA FoodData Central`.
 
